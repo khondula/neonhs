@@ -183,8 +183,12 @@ hs_epsg <- function(filename) {
 #' 
 #' @export
 hs_proj4string <- function(filename) {
-  epsg <- hs_epsg(filename)
-  paste0("+init=epsg:", epsg)
+  file_h5 <- hdf5r::H5File$new(filename, mode = 'r+')
+  site <- file_h5$ls()$name
+  proj4_path <- paste0(site, '/Reflectance/Metadata/Coordinate_System/Proj4')
+  proj4_code <- file_h5[[proj4_path]]$read()
+  file_h5$close_all()
+  proj4_code
 }
 
 #' Get wavelengths from a hyperspectral image
