@@ -236,7 +236,7 @@ read_hs_values <- function(filename, index){
   
   r_terra <- terra::rast(r)
   my_epsg <- hs_epsg(filename)
-  terra::crs(r_terra) <- sf::st_crs(paste0("epsg:",my_epsg))
+  terra::crs(r_terra) <- sf::st_crs(paste0("epsg:",my_epsg)) %>% as.character()
   
   file_h5$close_all()
   r_terra
