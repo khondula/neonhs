@@ -42,7 +42,7 @@ hs_read <- function(filename, bands, crop = FALSE){
     out_extent <- raster::intersect(h5_extent, crop)
   }
   r <- read_hs_values(filename, index)
-  terra::ext(r) <- out_extent
+  terra::ext(r) <- out_extent %>% as.vector()
   r
 }
 
@@ -232,13 +232,11 @@ read_hs_values <- function(filename, index){
   r <- hs_clean(r, reflectance)
   names(r) <- hs_wavelength(filename, bands)
   
-  # raster::extent(r) <- out_exent
-  
-  r_terra <- terra::rast(r)
   my_epsg <- hs_epsg(filename)
-  terra::crs(r_terra) <- sf::st_crs(paste0("epsg:",my_epsg)) %>% as.character()
-  
-  file_h5$close_all()
+  r_terra <- terra::rast(r)
+  my_crs <- sf::st_crs(paste0("epsg:", my_epsg)) %>% as.character()
+  terra::crs(r_terra) <- my_crs[2]
+  # file_h5$close_all()
   r_terra
 }
 
