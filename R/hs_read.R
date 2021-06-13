@@ -151,7 +151,7 @@ hs_extent <- function(filename){
   xmax <- xmin + dims[2] * xy_resolution[1]
   ymax <- as.numeric(map_info[5])
   ymin <- ymax - dims[3] * xy_resolution[2]
-  raster::extent(xmin, xmax, ymin, ymax)
+  terra::ext(xmin, xmax, ymin, ymax)
 }
 
 
